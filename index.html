@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red de Mortalidad y Salud - ALAP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.7;
+            color: #2c2c2c;
+            background: #ffffff;
+        }
+
+        .header {
+            background: white;
+            color: #333;
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .logo-left, .logo-right {
+            flex: 0 0 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-left img, .logo-right img {
+            max-width: 120px;
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        .header-center {
+            flex: 1;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .header-center h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            font-family: 'Open Sans', sans-serif;
+            letter-spacing: -0.5px;
+            color: #2c2c2c;
+        }
+
+        .header-center p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .nav-tabs {
+            background: #054056;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab {
+            background: none;
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: rgba(255,255,255,0.2);
+            border-bottom-color: #c67438;
+        }
+
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem 60px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #e5e5e5;
+        }
+
+        .section-header {
+            background: #054056;
+            color: white;
+            padding: 1.2rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            font-family: 'Open Sans', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        .person-card {
+            background: white;
+            border: none;
+            border-radius: 0;
+            padding: 1.5rem 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .person-card:hover {
+            background: #f9f9f9;
+        }
+
+        .person-name {
+            color: #2c2c2c;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .person-role {
+            color: #9f3536;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .person-info {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 0;
+            padding: 2rem 0;
+            box-shadow: none;
+            text-align: center;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .form-description {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .form-button {
+            display: inline-block;
+            background: #054056;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 1px solid #054056;
+        }
+
+        .form-button:hover {
+            background: #408355;
+        }
+
+        .highlight-box {
+            background: #f9f9f9;
+            border-left: 3px solid #c67438;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0;
+        }
+
+        .eventos-layout {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+        }
+
+        .evento-banner {
+            flex: 0 0 400px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-left, .logo-right {
+                flex: none;
+                margin: 1rem 0;
+            }
+            
+            .header-center {
+                padding: 1rem 0;
+            }
+            
+            .header-center h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                padding: 0.8rem;
+            }
+            
+            .eventos-layout {
+                flex-direction: column !important;
+                gap: 2rem !important;
+            }
+            
+            .evento-banner {
+                flex: none !important;
+                order: -1;
+            }
+            
+            .content {
+                padding: 2rem 30px;
+            }
+            
+            .columns-layout {
+                columns: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-left">
+                <img src="images/logo-alap.png" alt="Logo ALAP">
+            </div>
+            
+            <div class="header-center">
+                <h1>Red de Mortalidad y Salud</h1>
+                <p>Asociación Latinoamericana de Población - ALAP</p>
+            </div>
+            
+            <div class="logo-right">
+                <img src="images/logo-red.png" alt="Logo Red de Salud y Mortalidad">
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('quienes-somos')">Quiénes somos</button>
+        <button class="nav-tab" onclick="showTab('eventos')">Eventos</button>
+        <button class="nav-tab" onclick="showTab('registro')">Registro</button>
+    </nav>
+
+    <main class="content">
+        <!-- TAB 1: QUIÉNES SOMOS -->
+        <div id="quienes-somos" class="tab-content active">
+            <div class="section">
+                <div class="section-header">
+                    Descripción de la Red
+                </div>
+                <div class="section-content">
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: #333; text-align: justify;">
+                        La red temática sobre mortalidad y salud se conforma por especialistas en estos temas desde la demografía. Se busca iniciar la red con colegas de la región independientemente de su adscripción institucional buscando expandirla en el corto plazo. En esta red se agrupan demógrafas y demógrafos especialistas en temas de mortalidad, salud y temas relacionados que busquen comprender de manera conjunta su heterogeneidad, así como los aciertos y retos de los sistemas de salud y la forma en que viven, enferman, envejecen y mueren las poblaciones de América Latina.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    Objetivo
+                </div>
+                <div class="section-content">
+                    <div class="highlight-box">
+                        <p style="font-size: 1.1rem; line-height: 1.8; color: #333; text-align: justify; margin: 0;">
+                            El objetivo de la Red es consolidar redes de investigación entre colegas de América Latina que están interesados en el Análisis Demográfico de la Mortalidad y Salud así como de temáticas afines por medio de productos académicos de investigación y difusión.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    Moderadores
+                </div>
+                <div class="section-content">
+                    <h3 style="color: #2c2c2c; margin-bottom: 1rem; font-size: 1.3rem;">Actuales (2025-2026)</h3>
+                    
+                    <div class="person-card">
+                        <div class="person-name">Jenny García</div>
+                        <div class="person-role">INED</div>
+                        <div class="person-info">
+                            <strong>Email:</strong> jenny.garcia@ined.fr
+                        </div>
+                    </div>
+                    
+                    <div class="person-card">
+                        <div class="person-name">Beatriz Novak</div>
+                        <div class="person-role">CEDUA COLMEX, México</div>
+                        <div class="person-info">
+                            <strong>Email:</strong> bnovak@colmex.mx
+                        </div>
+                    </div>
+                    
+                    <div class="person-card">
+                        <div class="person-name">Catalina Torres</div>
+                        <div class="person-role">Universidad de la República, Uruguay</div>
+                        <div class="person-info">
+                            <strong>Email:</strong> catalina.torres@cienciassociales.edu.uy
+                        </div>
+                    </div>
+
+                    <h3 style="color: #2c2c2c; margin: 2rem 0 1rem 0; font-size: 1.3rem;">Anteriores</h3>
+                    
+                    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 0; border-left: 3px solid #c67438;">
+                        <h4 style="color: #9f3536; margin-bottom: 1rem;">Periodo 2023-2024</h4>
+                        <ul style="color: #666; line-height: 1.8;">
+                            <li>Jenny García, INED</li>
+                            <li>Beatriz Novak, CEDUA COLMEX, México</li>
+                            <li>Víctor M. García-Guerrero, CEDUA COLMEX, México</li>
+                        </ul>
+                        
+                        <h4 style="color: #9f3536; margin: 1.5rem 0 1rem 0;">Periodo 2021-2022</h4>
+                        <ul style="color: #666; line-height: 1.8;">
+                            <li>Víctor M. García-Guerrero, CEDUA COLMEX, México</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    Integrantes
+                </div>
+                <div class="section-content">
+                    <div class="columns-layout" style="columns: 2; column-gap: 3rem; line-height: 1.8;">
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Hirám Beltrán-Sánchez</strong><br>
+                            <span style="color: #9f3536;">Department of Community Health Sciences-UCLA, México</span><br>
+                            <span style="color: #666;">Email: beltrans@ucla.edu</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Paola Vázquez</strong><br>
+                            <span style="color: #9f3536;">Interdisciplinary Centre on Population Dynamics-SDU, México</span><br>
+                            <span style="color: #666;">Email: pavaz@sdu.dk</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Vanessa Di Lego</strong><br>
+                            <span style="color: #9f3536;">Wittgenstein Centre for Demography and Global Human Capital, Brasil</span><br>
+                            <span style="color: #666;">Email: Vanessa.DiLego@oeaw.ac.at</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Hernán Manzelli</strong><br>
+                            <span style="color: #9f3536;">Centro de Estudios de Población-CONICET, Argentina</span><br>
+                            <span style="color: #666;">Email: hernan@cenep.org.ar</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Jenny García</strong><br>
+                            <span style="color: #9f3536;">Institut National D'Etudes Démographiques, Venezuela</span><br>
+                            <span style="color: #666;">Email: jenny.garcia@ined.fr</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Enrique Acosta</strong><br>
+                            <span style="color: #9f3536;">Laboratory of Population Health-MPIDR, Colombia</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Emerson Baptista</strong><br>
+                            <span style="color: #9f3536;">Centro de Estudios Demográficos, Urbanos y Ambientales-COLMEX, México/Brasil</span><br>
+                            <span style="color: #666;">Email: ebaptista@colmex.mx</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">José Manuel Aburto</strong><br>
+                            <span style="color: #9f3536;">Leverhulme Centre for Demographic Science and the Department of Sociology, Oxford, México</span><br>
+                            <span style="color: #666;">Email: jose-manuel.aburto@sociology.ox.ac.uk</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Vladimir Canudas-Romo</strong><br>
+                            <span style="color: #9f3536;">School of Demography, College of Arts and Social Sciences, Australian National University, México</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Bernardo Lanza Queiroz</strong><br>
+                            <span style="color: #9f3536;">Departmento de Demografía-CEDEPLAR-UFMG, Brasil</span><br>
+                            <span style="color: #666;">Email: lanza@cedeplar.ufmg.br</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem; break-inside: avoid;">
+                            <strong style="color: #2c2c2c;">Everton Lima</strong><br>
+                            <span style="color: #9f3536;">Departamento de Demografía-UNICAMP, Brasil</span><br>
+                            <span style="color: #666;">Email: evertone@unicamp.br</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    Fundador de la Red
+                </div>
+                <div class="section-content">
+                    <div class="highlight-box">
+                        <div style="text-align: center;">
+                            <h3 style="color: #2c2c2c; margin-bottom: 0.5rem;">Víctor M. García-Guerrero</h3>
+                            <p style="color: #9f3536; font-weight: 600; margin-bottom: 0.5rem;">CEDUA COLMEX, México</p>
+                            <p style="color: #666; font-size: 1rem; margin-bottom: 1rem;">
+                                <strong>Email:</strong> vmgarcia@colmex.mx
+                            </p>
+                            <p style="color: #666; font-size: 1.1rem; margin: 0;">
+                                <strong>Fundada en 2021</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: EVENTOS -->
+        <div id="eventos" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    I Seminario sobre Salud y Mortalidad en América Latina
+                </div>
+                <div class="section-content">
+                    <div class="eventos-layout">
+                        <!-- Información del evento (lado izquierdo) -->
+                        <div style="flex: 1;">
+                            <div style="font-size: 1.6rem; margin-bottom: 1rem; color: #054056; font-weight: 600;">
+                                I Seminario sobre Salud y Mortalidad en América Latina
+                            </div>
+                            
+                            <div style="margin-bottom: 2rem;">
+                                <p style="color: #2c2c2c; font-size: 1.1rem; margin-bottom: 0.8rem; display: flex; align-items: center;">
+                                    <span style="margin-right: 8px;">📅</span>
+                                    17 y 18 de Septiembre de 2025
+                                </p>
+                                
+                                <p style="color: #2c2c2c; font-size: 1rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start;">
+                                    <span style="margin-right: 8px; margin-top: 2px;">🏛️</span>
+                                    <span>
+                                        Facultad de Ciencias Sociales (FCS)<br>
+                                        Universidad de la República, Uruguay
+                                    </span>
+                                </p>
+                                
+                                <!-- Botón de descarga prominente -->
+                                <div style="text-align: left;">
+                                    <a href="docs/seminario-salud-mortalidad-2025.pdf" target="_blank" 
+                                       style="display: inline-block; background: #054056; color: white; padding: 1rem 2rem; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease; border: 1px solid #054056; box-shadow: 0 3px 10px rgba(5, 64, 86, 0.2);"
+                                       onmouseover="this.style.backgroundColor='#408355'; this.style.transform='translateY(-2px)'"
+                                       onmouseout="this.style.backgroundColor='#054056'; this.style.transform='translateY(0)'">
+                                        📄 Descargar programa completo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Banner del evento (lado derecho) -->
+                        <div class="evento-banner">
+                            <div style="background: white; border-radius: 0; overflow: hidden; border: 1px solid #e5e5e5;">
+                                <img src="images/banner-seminario.jpg" alt="Banner I Seminario Salud y Mortalidad" 
+                                     style="width: 100%; height: auto; display: block;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: REGISTRO -->
+        <div id="registro" class="tab-content">
+            <div class="form-container">
+                <h2 style="color: #2c2c2c; margin-bottom: 1rem;">Únete a la Red de Mortalidad y Salud</h2>
+                <div class="form-description">
+                    ¿Te interesa el estudio de la mortalidad y la salud en América Latina desde una perspectiva académica o profesional? 
+                    Te invitamos a formar parte de nuestra comunidad científica.
+                </div>
+                
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfqTZggtXLrkKY2VpPmSZiOhyXK345oiLxuw_e4C0H7dgsc9g/viewform" target="_blank" class="form-button">
+                    📝 Completar formulario de registro
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showTab(tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            const tabButtons = document.querySelectorAll('.nav-tab');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
